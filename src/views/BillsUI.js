@@ -19,8 +19,23 @@ const row = (bill) => {
     `)
   }
 
+const dateComparison = (a, b) => {
+    if (a.date > b.date) {
+        return -1;
+        // a passe avant b
+    }
+
+    if (a.date > b.date) {
+        return 1;
+        // b passe avant a
+    }
+
+    return 0;
+}
+
 const rows = (data) => {
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+    data.sort(dateComparison);
+    return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {
