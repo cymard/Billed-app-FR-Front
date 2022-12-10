@@ -26,7 +26,7 @@ export default (bill) => {
   return (`
     <div class="container dashboard-form" data-testid="dashboard-form">
       <div class="row">
-        <div class="col-sm" id="dashboard-form-col1">
+        <div class="col-sm" id="dashboard-form-col1" data-billid="${bill.id}">
           <label for="expense-type" class="bold-label">Type de dépense</label>
           <div class='input-field'> ${bill.type} </div>
           <label for="expense-name" class="bold-label">Nom de la dépense</label>
