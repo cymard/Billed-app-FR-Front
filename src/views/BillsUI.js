@@ -34,7 +34,9 @@ const dateComparison = (a, b) => {
 }
 
 const rows = (data) => {
-    data.sort(dateComparison);
+    if(data) {
+        data.sort(dateComparison);
+    }
     return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
 }
 
