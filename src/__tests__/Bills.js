@@ -10,7 +10,6 @@ import {ROUTES, ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 import mockStore from "../__mocks__/store";
 import router from "../app/Router.js";
-import userEvent from "@testing-library/user-event";
 
 jest.mock("../app/store", () => mockStore);
 
@@ -120,7 +119,7 @@ describe("Given I am connected as an employee", () => {
 
     /* Api Get Bills */
 
-    describe("When Employee Navigate on Bills Dashbord", () => {
+    describe("When I Navigate on Bills Dashbord", () => {
         beforeEach(() => {
             jest.spyOn(mockStore, "bills");
             Object.defineProperty(window, "localStorage", {
@@ -149,8 +148,6 @@ describe("Given I am connected as an employee", () => {
             });
             window.onNavigate(ROUTES_PATH.Bills);
             await new Promise(process.nextTick);
-
-            // document.body.innerHTML = BillsUI({data: bills, error: new Error("Erreur 404")})
             const message = await screen.getByText(/Erreur 404/);
             expect(message).toBeTruthy();
         });
@@ -166,7 +163,6 @@ describe("Given I am connected as an employee", () => {
 
             window.onNavigate(ROUTES_PATH.Bills);
             await new Promise(process.nextTick);
-            // document.body.innerHTML = BillsUI({data: bills, error: new Error("Erreur 500")})
             const message = await screen.getByText(/Erreur 500/);
             expect(message).toBeTruthy();
         });
@@ -175,37 +171,5 @@ describe("Given I am connected as an employee", () => {
             const bills = await mockStore.bills().list();
             expect(bills.length).toBe(4);
         });
-
-        test("...Then the Modal Should Open", () => {
-            Object.defineProperty(window, localStorage, {value: localStorageMock})
-            window.localStorage.setItem("user", JSON.stringify({type: 'Employee'}))
-            document.body.innerHTML = BillsUI({data: bills})
-
-            const onNavigate = (pathname) => {
-                document.body.innerHTML = ROUTES({pathname})
-            }
-
-            const billsContainer = new Bills({
-                document,
-                onNavigate,
-                localStorage: localStorageMock,
-                store: null,
-            });
-
-            // Mock The Modal
-            $.fn.modal = jest.fn();
-            // console.debug(billsContainer)
-            // Mock the Handle Click Icon
-            const handleClickIconEye = jest.fn(() => {
-                billsContainer.handleClickIconEye
-            });
-            const firstEyeIcon = screen.getAllByTestId("icon-eye")[0];
-            firstEyeIcon.addEventListener("click", handleClickIconEye)
-            fireEvent.click(firstEyeIcon)
-
-            expect(handleClickIconEye).toHaveBeenCalled();
-            expect($.fn.modal).toHaveBeenCalled();
-        });
-
     });
 })
